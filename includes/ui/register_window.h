@@ -22,7 +22,6 @@ class RegisterWindow : public QWidget {
     Q_OBJECT
 
 public:
-    // 修改构造函数，接受MainWindow指针
     explicit RegisterWindow(MainWindow* main_window, QWidget* parent = nullptr);
 
 signals:
@@ -38,7 +37,7 @@ private:
     void SetupUI();
     bool ValidateInput();
 
-    MainWindow* main_window_;  // 添加MainWindow引用
+    MainWindow* main_window_;
     QLineEdit* username_edit_;
     QLineEdit* password_edit_;
     QLineEdit* confirm_password_edit_;

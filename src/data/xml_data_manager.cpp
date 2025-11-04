@@ -11,8 +11,6 @@
 XMLDataManager::XMLDataManager(const std::string& users_file,
                                const std::string& products_file)
     : users_file_(users_file), products_file_(products_file) {
-
-    // 确保resource目录存在
     QDir().mkpath("resource");
     InitializeDemoData();
 }
@@ -22,7 +20,7 @@ void XMLDataManager::InitializeDemoData() {
     if (!users_file.exists()) {
         std::cout << "Creating demo users..." << std::endl;
 
-        // 创建演示用户 - 确保用户ID和用户名一致
+        //create demo users
         User admin_user("admin", "admin", "admin123",
                         "admin@shop.com", "123456789", "admin");
         SaveUser(admin_user);
@@ -39,24 +37,23 @@ void XMLDataManager::InitializeDemoData() {
         SaveUser(user3);
     }
 
-    // 检查产品文件是否存在，如果不存在则创建一些演示产品
     QFile products_file(QString::fromStdString(products_file_));
     if (!products_file.exists()) {
-        std::cout << "Creating demo products..." << std::endl;  // 使用 std::cout 而不是 qDebug
+        std::cout << "Creating demo products..." << std::endl;
 
-        // 创建演示产品（现在包含数量）
+        //create demo products
         std::time_t current_time = std::time(nullptr);
 
         Product product1("1", "Laptop", "High performance gaming laptop", 999.99,
-                         "electronics", "", current_time, "user1", 5);  // 添加数量
+                         "electronics", "", current_time, "user1", 5);
         SaveProduct(product1);
 
         Product product2("2", "Book", "C++ Programming Guide", 29.99,
-                         "books", "", current_time, "user2", 10);  // 添加数量
+                         "books", "", current_time, "user2", 10);
         SaveProduct(product2);
 
         Product product3("3", "Smartphone", "Latest smartphone model", 699.99,
-                         "electronics", "", current_time, "user1", 3);  // 添加数量
+                         "electronics", "", current_time, "user1", 3);
         SaveProduct(product3);
     }
 }
@@ -65,7 +62,6 @@ bool XMLDataManager::SaveUser(const User& user) {
     QFile file(QString::fromStdString(users_file_));
     QDomDocument doc;
 
-    // 如果文件存在，读取现有内容
     if (file.exists() && file.open(QIODevice::ReadOnly)) {
         if (!doc.setContent(&file)) {
             file.close();
@@ -73,21 +69,18 @@ bool XMLDataManager::SaveUser(const User& user) {
         }
         file.close();
     } else {
-        // 创建新的XML结构
         QDomElement root = doc.createElement("users");
         doc.appendChild(root);
     }
 
     QDomElement root = doc.documentElement();
 
-    // 检查用户是否已存在
     QDomNodeList users = root.elementsByTagName("user");
     for (int i = 0; i < users.count(); ++i) {
         QDomElement user_elem = users.at(i).toElement();
         QString stored_username = user_elem.elementsByTagName("username").at(0).toElement().text();
 
         if (stored_username == QString::fromStdString(user.GetUsername())) {
-            // 用户已存在，更新用户信息
             user_elem.elementsByTagName("password").at(0).toElement().firstChild().setNodeValue(
                 QString::fromStdString(user.GetPassword()));
             user_elem.elementsByTagName("email").at(0).toElement().firstChild().setNodeValue(
@@ -97,7 +90,6 @@ bool XMLDataManager::SaveUser(const User& user) {
             user_elem.elementsByTagName("role").at(0).toElement().firstChild().setNodeValue(
                 QString::fromStdString(user.GetRole()));
 
-            // 保存到文件
             if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
                 QTextStream stream(&file);
                 doc.save(stream, 2);
@@ -108,7 +100,7 @@ bool XMLDataManager::SaveUser(const User& user) {
         }
     }
 
-    // 创建新用户元素
+    //create new user elements
     QDomElement user_elem = doc.createElement("user");
 
     QDomElement user_id = doc.createElement("user_id");
@@ -139,7 +131,7 @@ bool XMLDataManager::SaveUser(const User& user) {
 
     root.appendChild(user_elem);
 
-    // 保存到文件
+    //save to file
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         QTextStream stream(&file);
         doc.save(stream, 2);
@@ -194,7 +186,6 @@ bool XMLDataManager::SaveProduct(const Product& product) {
     QFile file(QString::fromStdString(products_file_));
     QDomDocument doc;
 
-    // 如果文件存在，读取现有内容
     if (file.exists() && file.open(QIODevice::ReadOnly)) {
         if (!doc.setContent(&file)) {
             file.close();
@@ -202,21 +193,20 @@ bool XMLDataManager::SaveProduct(const Product& product) {
         }
         file.close();
     } else {
-        // 创建新的XML结构
         QDomElement root = doc.createElement("products");
         doc.appendChild(root);
     }
 
     QDomElement root = doc.documentElement();
 
-    // 检查产品是否已存在
+    // check whether the product exist
     QDomNodeList products = root.elementsByTagName("product");
     for (int i = 0; i < products.count(); ++i) {
         QDomElement product_elem = products.at(i).toElement();
         QString stored_product_id = product_elem.elementsByTagName("product_id").at(0).toElement().text();
 
         if (stored_product_id == QString::fromStdString(product.GetProductId())) {
-            // 产品已存在，更新产品信息
+           //exist,update elements
             product_elem.elementsByTagName("name").at(0).toElement().firstChild().setNodeValue(
                 QString::fromStdString(product.GetProductName()));
             product_elem.elementsByTagName("description").at(0).toElement().firstChild().setNodeValue(
@@ -228,7 +218,7 @@ bool XMLDataManager::SaveProduct(const Product& product) {
             product_elem.elementsByTagName("image_path").at(0).toElement().firstChild().setNodeValue(
                 QString::fromStdString(product.GetImagePath()));
 
-            // 保存到文件
+            //save to file
             if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
                 QTextStream stream(&file);
                 doc.save(stream, 2);
@@ -239,7 +229,7 @@ bool XMLDataManager::SaveProduct(const Product& product) {
         }
     }
 
-    // 创建新产品元素
+    // create new product elements
     QDomElement product_elem = doc.createElement("product");
 
     QDomElement product_id = doc.createElement("product_id");
@@ -283,7 +273,7 @@ bool XMLDataManager::SaveProduct(const Product& product) {
 
     root.appendChild(product_elem);
 
-    // 保存到文件
+    // save to file
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         QTextStream stream(&file);
         doc.save(stream, 2);
@@ -348,12 +338,12 @@ std::vector<Product*> XMLDataManager::SearchProducts(const std::string& keyword,
     for (auto* product : all_products) {
         bool match = true;
 
-        // 按类别过滤
+        // categorys
         if (!category.empty() && product->GetCategory() != category) {
             match = false;
         }
 
-        // 按关键词过滤
+        // key words
         if (match && !keyword.empty()) {
             std::string name_lower = product->GetProductName();
             std::transform(name_lower.begin(), name_lower.end(), name_lower.begin(), ::tolower);

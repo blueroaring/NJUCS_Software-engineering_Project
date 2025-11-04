@@ -13,7 +13,7 @@
 #include <QTextEdit>
 #include "../../includes/services/product_service.h"
 #include "../../includes/ui/product_form.h"
-#include "../../includes/ui/main_window.h"  // 包含MainWindow头文件
+#include "../../includes/ui/main_window.h"
 
 ProductListWidget::ProductListWidget(MainWindow* main_window, QWidget* parent)
     : QWidget(parent), main_window_(main_window), current_user_(nullptr) {
@@ -147,7 +147,7 @@ void ProductListWidget::DisplayProducts(const std::vector<Product*>& products) {
     product_list_->clear();
 
     for (const auto* product : products) {
-        // 在商品名称后显示数量和价格
+
         QString item_text = QString("%1 - $%2 - Qty: %3")
                                 .arg(QString::fromStdString(product->GetProductName()))
                                 .arg(product->GetPrice(), 0, 'f', 2)
@@ -156,7 +156,7 @@ void ProductListWidget::DisplayProducts(const std::vector<Product*>& products) {
         QListWidgetItem* item = new QListWidgetItem(item_text, product_list_);
         item->setData(Qt::UserRole, QString::fromStdString(product->GetProductId()));
 
-        // 添加工具提示，包含更多详细信息
+
         QString tooltip = QString("Description: %1\nCategory: %2\nPublished: %3")
                               .arg(QString::fromStdString(product->GetDescription()))
                               .arg(QString::fromStdString(product->GetCategory()))

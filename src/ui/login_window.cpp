@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QFormLayout>
 #include "../../includes/services/auth_service.h"
-#include "../../includes/ui/main_window.h"  // 包含MainWindow头文件
+#include "../../includes/ui/main_window.h"
 
 // 修改构造函数
 LoginWindow::LoginWindow(MainWindow* main_window, QWidget* parent)
@@ -69,7 +69,6 @@ void LoginWindow::HandleLogin() {
         return;
     }
 
-    // 使用MainWindow中的共享AuthService
     if (!main_window_ || !main_window_->GetAuthService()) {
         QMessageBox::warning(this, "System Error", "Authentication service not available.");
         return;

@@ -18,7 +18,7 @@ ProductForm::ProductForm(QWidget* parent) : QDialog(parent) {
 void ProductForm::SetupUI() {
     setWindowTitle("Product Form");
     setModal(true);
-    setMinimumSize(400, 350);  // 增加高度以容纳新字段
+    setMinimumSize(400, 350);
 
     QVBoxLayout* main_layout = new QVBoxLayout(this);
 
@@ -40,7 +40,7 @@ void ProductForm::SetupUI() {
     price_spin_->setPrefix("$");
     form_layout->addRow("Price:", price_spin_);
 
-    quantity_spin_ = new QSpinBox(this);  // 数量输入框
+    quantity_spin_ = new QSpinBox(this);
     quantity_spin_->setRange(1, 10000);
     quantity_spin_->setValue(1);
     form_layout->addRow("Quantity:", quantity_spin_);
@@ -83,7 +83,7 @@ std::map<std::string, std::string> ProductForm::GetProductData() const {
     data["name"] = name_edit_->text().toStdString();
     data["description"] = description_edit_->toPlainText().toStdString();
     data["price"] = QString::number(price_spin_->value()).toStdString();
-    data["quantity"] = QString::number(quantity_spin_->value()).toStdString();  // 添加数量
+    data["quantity"] = QString::number(quantity_spin_->value()).toStdString();
     data["category"] = category_combo_->currentData().toString().toStdString();
     data["image_path"] = image_path_edit_->text().toStdString();
     return data;
@@ -95,7 +95,7 @@ void ProductForm::SetProductData(const Product* product) {
     name_edit_->setText(QString::fromStdString(product->GetProductName()));
     description_edit_->setText(QString::fromStdString(product->GetDescription()));
     price_spin_->setValue(product->GetPrice());
-    quantity_spin_->setValue(product->GetQuantity());  // 设置数量
+    quantity_spin_->setValue(product->GetQuantity());
 
     // Set category
     QString category = QString::fromStdString(product->GetCategory());

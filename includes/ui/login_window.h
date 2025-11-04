@@ -21,7 +21,6 @@ class LoginWindow : public QWidget {
     Q_OBJECT
 
 public:
-    // 修改构造函数，接受MainWindow指针
     explicit LoginWindow(MainWindow* main_window, QWidget* parent = nullptr);
 
 signals:
@@ -35,7 +34,7 @@ private slots:
 private:
     void SetupUI();
 
-    MainWindow* main_window_;  // 添加MainWindow引用
+    MainWindow* main_window_;
     QLineEdit* username_edit_;
     QLineEdit* password_edit_;
     QPushButton* login_button_;

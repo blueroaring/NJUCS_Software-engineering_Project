@@ -28,7 +28,7 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-    // 添加获取服务的方法，供其他窗口使用
+    //used for other windows
     std::shared_ptr<AuthService> GetAuthService() { return auth_service_; }
     std::shared_ptr<ProductService> GetProductService() { return product_service_; }
     std::shared_ptr<XMLDataManager> GetDataManager() { return data_manager_; }

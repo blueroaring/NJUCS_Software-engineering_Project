@@ -11,7 +11,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include "../../includes/services/auth_service.h"
-#include "../../includes/ui/main_window.h"  // 包含MainWindow头文件
+#include "../../includes/ui/main_window.h"
 
 // 修改构造函数
 RegisterWindow::RegisterWindow(MainWindow* main_window, QWidget* parent)
@@ -57,11 +57,9 @@ void RegisterWindow::SetupUI() {
     phone_edit_->setPlaceholderText("Your phone number");
     form_layout->addRow("Phone:", phone_edit_);
 
-    // 添加管理员注册选项
     admin_checkbox_ = new QCheckBox("Register as Administrator", this);
     form_layout->addRow("", admin_checkbox_);
 
-    // 管理员权限组（初始隐藏）
     admin_group_ = new QGroupBox("Administrator Registration", this);
     admin_group_->setVisible(false);
 
@@ -123,7 +121,6 @@ void RegisterWindow::HandleRegister() {
         }
     }
 
-    // 使用MainWindow中的共享AuthService
     if (!main_window_ || !main_window_->GetAuthService()) {
         QMessageBox::warning(this, "System Error", "Authentication service not available.");
         return;
@@ -146,10 +143,8 @@ void RegisterWindow::HandleBackToLogin() {
 }
 
 void RegisterWindow::HandleAdminCheckboxChanged(int state) {
-    // 根据复选框状态显示或隐藏管理员密码输入区域
-    admin_group_->setVisible(state == Qt::Checked);
+     admin_group_->setVisible(state == Qt::Checked);
 
-    // 调整窗口大小以适应内容变化
     adjustSize();
 }
 
@@ -196,7 +191,7 @@ bool RegisterWindow::ValidateInput() {
         return false;
     }
 
-    // 如果选择注册为管理员，验证管理员密码
+    // Validate admin password
     if (admin_checkbox_->isChecked()) {
         QString admin_password = admin_password_edit_->text();
         if (admin_password.isEmpty()) {

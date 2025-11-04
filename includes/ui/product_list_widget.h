@@ -28,7 +28,6 @@ class ProductListWidget : public QWidget {
     Q_OBJECT
 
 public:
-    // 修改构造函数，接受MainWindow指针
     explicit ProductListWidget(MainWindow* main_window, QWidget* parent = nullptr);
 
     void SetCurrentUser(User* user);
@@ -55,7 +54,7 @@ private:
     Product* GetSelectedProduct();
     void ShowSellerContactInfo(const Product* product);
 
-    MainWindow* main_window_;  // 添加MainWindow引用
+    MainWindow* main_window_;
     User* current_user_;
 
     QVBoxLayout* main_layout_;

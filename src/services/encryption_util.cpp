@@ -24,7 +24,7 @@ std::string EncryptionUtil::HashPassword(const std::string& password) {
     QByteArray hash = QCryptographicHash::hash(password_data, QCryptographicHash::Sha256);
 
     // Combine salt and hash for storage (format: salt:hash)
-    std::string salt_hex = salt.c_str(); // In a real implementation, you'd convert to hex
+    std::string salt_hex = salt.c_str();
     std::string hash_hex = hash.toHex().toStdString();
 
     return salt_hex + ":" + hash_hex;

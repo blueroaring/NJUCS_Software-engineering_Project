@@ -11,7 +11,6 @@ bool AuthService::Register(const std::map<std::string, std::string>& user_data) 
     std::string phone = user_data.at("phone");
     std::string role = user_data.count("role") > 0 ? user_data.at("role") : "user";
 
-    // 在 AuthService 中使用 EncryptionUtil 处理密码哈希
    // std::string hashed_password = encrypt_util_->HashPassword(password);
     User user("", username, password, email, phone, role);
     return data_manager_->SaveUser(user);
@@ -26,7 +25,7 @@ User* AuthService::Login(const std::string& username, const std::string& passwor
         return user;
     }
     if (user) {
-        delete user; // 如果密码不匹配，释放内存
+        delete user;
     }
     return nullptr;
 }

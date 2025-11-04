@@ -20,7 +20,6 @@ public:
     std::vector<Product*> SearchProducts(const std::string& keyword,
                                           const std::string& category);
 
-    // 修改方法签名，添加权限参数
     bool UpdateProduct(const std::string& product_id,
                        const std::map<std::string, std::string>& updates,
                        const std::string& user_id, bool is_admin);
