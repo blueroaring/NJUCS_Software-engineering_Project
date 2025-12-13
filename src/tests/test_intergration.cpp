@@ -22,9 +22,10 @@ void TestIntegration::initTestCase()
 
         // 创建加密工具和服务
         encryptionUtil = new EncryptionUtil();
-        auto dataManagerShared = std::shared_ptr<XMLDataManager>(dataManager);
-        authService = new AuthService(dataManagerShared, 
-                                     std::shared_ptr<EncryptionUtil>(encryptionUtil));
+        // 使用原始指针创建shared_ptr，但不转移所有权
+        auto dataManagerShared = std::shared_ptr<XMLDataManager>(dataManager, [](XMLDataManager*) {/* 不删除 */});
+        auto encryptionUtilShared = std::shared_ptr<EncryptionUtil>(encryptionUtil, [](EncryptionUtil*) {/* 不删除 */});
+        authService = new AuthService(dataManagerShared, encryptionUtilShared);
 
         qDebug() << "Integration test case initialized successfully";
     }
@@ -42,8 +43,16 @@ void TestIntegration::cleanupTestCase()
 {
     qDebug() << "Cleaning up Integration test case...";
 
+    // 重置指针，让智能指针自动处理内存管理
+    // 注意：不要手动删除由shared_ptr管理的对象
     delete authService;
+    authService = nullptr;
+    
     delete encryptionUtil;
+    encryptionUtil = nullptr;
+    
+    delete dataManager;
+    dataManager = nullptr;
 
     // 清理测试文件
     QString tempUsersFile = QDir::tempPath() + "/integration_test_users_" + QString::number(QCoreApplication::applicationPid()) + ".xml";
@@ -54,6 +63,7 @@ void TestIntegration::cleanupTestCase()
 
     qDebug() << "Integration test case cleaned up";
 }
+
 
 void TestIntegration::testUserSaveAndRetrieve()
 {
