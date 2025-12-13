@@ -11,8 +11,8 @@
 XMLDataManager::XMLDataManager(const std::string& users_file,
                                const std::string& products_file)
     : users_file_(users_file), products_file_(products_file) {
-    QDir().mkpath("resource");
-    InitializeDemoData();
+   // QDir().mkpath("resource");
+   // InitializeDemoData();
 }
 
 void XMLDataManager::InitializeDemoData() {

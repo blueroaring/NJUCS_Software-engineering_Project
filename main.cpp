@@ -1,3 +1,26 @@
+#define RUN_TESTS
+#ifdef RUN_TESTS
+#include <QtTest/QTest>
+#include "includes/tests/test_encryptionutil.h"
+#include "includes/tests/test_authservice.h"
+#include "includes/tests/test_intergration.h"
+#include <QApplication>
+
+int main(int argc, char** argv) {
+    QApplication app(argc, argv);
+
+    TestEncryptionUtil testEncryption;
+    TestAuthService testAuth;
+    TestIntegration testIntergration;
+
+    int status = 0;
+    status |= QTest::qExec(&testEncryption, argc, argv);
+    status |= QTest::qExec(&testAuth, argc, argv);
+    status |= QTest::qExec(&testIntergration,argc,argv);
+
+    return status;
+}
+#else
 #include <QApplication>
 #include <QDir>
 #include "includes/ui/main_window.h"
@@ -25,3 +48,5 @@ int main(int argc, char* argv[]) {
 
     return app.exec();
 }
+#endif
+

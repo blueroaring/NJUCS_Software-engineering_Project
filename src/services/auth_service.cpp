@@ -1,4 +1,5 @@
 #include "../../includes/services/auth_service.h"
+#include<QDebug>
 
 AuthService::AuthService(std::shared_ptr<XMLDataManager> data_manager,
                          std::shared_ptr<EncryptionUtil> encrypt_util)
@@ -10,7 +11,7 @@ bool AuthService::Register(const std::map<std::string, std::string>& user_data) 
     std::string email = user_data.at("email");
     std::string phone = user_data.at("phone");
     std::string role = user_data.count("role") > 0 ? user_data.at("role") : "user";
-
+    qDebug()<<"Register";
    // std::string hashed_password = encrypt_util_->HashPassword(password);
     User user("", username, password, email, phone, role);
     return data_manager_->SaveUser(user);

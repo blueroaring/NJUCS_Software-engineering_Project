@@ -1,6 +1,7 @@
 QT = core
 QT += widgets
 QT += xml
+QT += testlib
 CONFIG += c++17 cmdline
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -19,7 +20,10 @@ SOURCES += \
         src/ui/main_window.cpp \
         src/ui/product_form.cpp \
         src/ui/product_list_widget.cpp \
-        src/ui/register_window.cpp
+        src/ui/register_window.cpp \
+        src/tests/test_encryptionutil.cpp \
+        src/tests/test_authservice.cpp \
+        src/tests/test_intergration.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -41,4 +45,12 @@ HEADERS += \
     includes/ui/main_window.h \
     includes/ui/product_form.h \
     includes/ui/product_list_widget.h \
-    includes/ui/register_window.h
+    includes/ui/register_window.h \
+    includes/tests/test_encryptionutil.h \
+    includes/tests/test_authservice.h \
+    includes/tests/test_intergration.h
+
+tests {
+        DEFINES += RUN_TESTS
+    }
+
