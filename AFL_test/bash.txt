@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# 清理之前的构建
+rm -rf build_fuzz
+mkdir -p build_fuzz
+
+# 编译 EncryptionUtil 类
+afl-clang-fast++ -std=c++17 -g -I/usr/include/openssl -c AFL_test/test_encry.cpp -o build_fuzz/test_encry.o
+
+# 编译新的AFL++原生测试入口
+afl-clang-fast++ -std=c++17 -g -c AFL_test/afl_test_main.cpp -o build_fuzz/afl_test_main.o
+
+# 链接生成最终的模糊测试可执行文件
+afl-clang-fast++ -std=c++17 -g build_fuzz/afl_test_main.o build_fuzz/test_encry.o -o build_fuzz/fuzz_target -lssl -lcrypto
+
+echo "构建完成！生成的fuzz_target可执行文件位于build_fuzz目录中。"
+
+echo ""
+echo "创建测试语料库..."
+mkdir -p fuzz_testcases
+echo "hello world" > fuzz_testcases/sample1.txt
+echo "password123" > fuzz_testcases/sample2.txt
+echo "test input" > fuzz_testcases/sample3.txt
+echo "CRASH" > fuzz_testcases/crash_sample1.txt
+echo "BOOM" > fuzz_testcases/crash_sample2.txt
+echo "BUFFER_OVERFLOW" > fuzz_testcases/crash_sample3.txt
+
+echo ""
+echo "运行模糊测试的命令："
+echo "afl-fuzz -i fuzz_testcases -o fuzz_findings -- build_fuzz/fuzz_target @@" 
+
+echo ""
+echo "要快速测试崩溃案例，请运行："
+echo "echo 'CRASH123' | ./build_fuzz/fuzz_target"
+echo "echo 'BOOM' | ./build_fuzz/fuzz_target"
+echo "echo 'BUFFER_OVERFLOW' | ./build_fuzz/fuzz_target"
