@@ -23,15 +23,21 @@ void testWithFileData(const std::string& filename) {
     // 创建EncryptionUtil实例
     EncryptionUtil encrypt_util;
     
-    // 测试哈希功能
+    // 直接测试所有可能的崩溃条件
+    // 测试哈希功能和缓冲区溢出
     std::string hashed = encrypt_util.HashPassword(inputData);
     
     // 测试验证功能
     bool verified = encrypt_util.VerifyPassword(inputData, hashed);
     
-    // 测试加密/解密功能
+    // 测试加密功能和空指针解引用
     std::string encrypted = encrypt_util.Encrypt(inputData);
-    std::string decrypted = encrypt_util.Decrypt(encrypted);
+    
+    // 测试解密功能和除零错误（使用原始输入）
+    std::string decrypted = encrypt_util.Decrypt(inputData);
+    
+    // 也测试解密加密后的数据
+    std::string decrypted_from_encrypted = encrypt_util.Decrypt(encrypted);
 }
 
 // 从stdin读取测试数据的函数
@@ -45,15 +51,21 @@ void testWithStdinData() {
     // 创建EncryptionUtil实例
     EncryptionUtil encrypt_util;
     
-    // 测试哈希功能
+    // 直接测试所有可能的崩溃条件
+    // 测试哈希功能和缓冲区溢出
     std::string hashed = encrypt_util.HashPassword(inputData);
     
     // 测试验证功能
     bool verified = encrypt_util.VerifyPassword(inputData, hashed);
     
-    // 测试加密/解密功能
+    // 测试加密功能和空指针解引用
     std::string encrypted = encrypt_util.Encrypt(inputData);
-    std::string decrypted = encrypt_util.Decrypt(encrypted);
+    
+    // 测试解密功能和除零错误（使用原始输入）
+    std::string decrypted = encrypt_util.Decrypt(inputData);
+    
+    // 也测试解密加密后的数据
+    std::string decrypted_from_encrypted = encrypt_util.Decrypt(encrypted);
 }
 
 int main(int argc, char** argv) {
